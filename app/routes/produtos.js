@@ -19,22 +19,31 @@ module.exports = function(app) {
     })
 
     app.get('/produtos/form', function(req, res) {
-        res.render('produtos/form');
+        res.render('produtos/form', { errosValidacao: {}, produto: {} });
     })
 
     app.post('/produtos', function(req, res) {
-        var connection = app.infra.connectionFactory();
-        var produtosDAO = new app.infra.ProdutosDAO(connection);
         var produto = req.body;
 
-        var validaTitulo = req.assert('titulo', 'Título é obrigatório');
-        validaTitulo.notEmpty();
+        req.assert('titulo', 'Título é obrigatório.').notEmpty();
+        req.assert('preco', 'Formato invalido.').isFloat();
 
         var erros = req.validationErrors();
         if (erros) {
-            res.render('produtos/form');
+            res.format({
+                html: function() {
+                    res.status(400).render('produtos/form', { errosValidacao: erros, produto: produto });
+                },
+                json: function() {
+                    res.status(400).json(erros);
+                }
+            });
+
             return;
         }
+
+        var connection = app.infra.connectionFactory();
+        var produtosDAO = new app.infra.ProdutosDAO(connection);
         //always redirect after post
         produtosDAO.salva(produto, function(err, results) {
             res.redirect('/produtos');

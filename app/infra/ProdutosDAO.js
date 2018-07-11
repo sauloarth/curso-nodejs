@@ -8,6 +8,10 @@ class ProdutosDAO {
         this._connection.query('select * from livros', callback);
     }
 
+    salva(produto, callback) {
+        this._connection.query('insert into livros set ?', produto, callback);
+    }
+
 }
 
 

@@ -26,6 +26,15 @@ module.exports = function(app) {
         var connection = app.infra.connectionFactory();
         var produtosDAO = new app.infra.ProdutosDAO(connection);
         var produto = req.body;
+
+        var validaTitulo = req.assert('titulo', 'Título é obrigatório');
+        validaTitulo.notEmpty();
+
+        var erros = req.validationErrors();
+        if (erros) {
+            res.render('produtos/form');
+            return;
+        }
         //always redirect after post
         produtosDAO.salva(produto, function(err, results) {
             res.redirect('/produtos');

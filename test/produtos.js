@@ -1,8 +1,18 @@
+process.env.NODE_ENV = 'test';
 var express = require('../config/express')();
 var request = require('supertest')(express);
-process.env.NODE_ENV = 'test';
 
 describe('#ProdutosController', function() {
+    beforeEach(function(done) {
+        var conn = express.infra.connectionFactory();
+        conn.query("delete from livros", function(ex, results) {
+            if (!ex) {
+                console.log('tabela limpa para testes')
+                done();
+            }
+        });
+    })
+
     it('listagem json', function(done) {
         request.get('/produtos')
             .set('Accept', 'application/json')

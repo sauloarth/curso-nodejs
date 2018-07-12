@@ -1,5 +1,6 @@
 var express = require('../config/express')();
 var request = require('supertest')(express);
+process.env.NODE_ENV = 'test';
 
 describe('#ProdutosController', function() {
     it('listagem json', function(done) {

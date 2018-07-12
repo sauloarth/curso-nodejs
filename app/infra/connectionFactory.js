@@ -20,6 +20,17 @@ function connectionCreator() {
         });
     }
 
+    if (process.env.NODE_ENV == 'production') {
+        var urlConnection = process.env.CLEARDB_DATABASE_URL;
+        var grupo = urlConnection.match(/mysql:\/\/(.*):(.*)@(.*)\/(.*)\?reconnect=true/)
+        return mysql.createConnection({
+            host: grupo[3],
+            user: grupo[1],
+            password: grupo[2],
+            database: grupo[4]
+        });
+    }
+
 }
 
 //wrapper to prevent connectionCreator call at once

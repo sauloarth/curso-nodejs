@@ -12,6 +12,10 @@ class ProdutosDAO {
         this._connection.query('insert into livros set ?', produto, callback);
     }
 
+    carregaPromocao(idPromocao, callback) {
+        this._connection.query('select * from livros where id = ?', idPromocao, callback);
+    }
+
 }
 
 

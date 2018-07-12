@@ -205,9 +205,10 @@
     <script>
         var socket = io();
         socket.on('novaPromocao', function(data) {
-            alert("Livro em promoção " + data.livro.id);
+            console.log('chegou: ' + data)
+            alert(data.mensagem + " " + data.titulo );
         });
-    </script>
+    </script
 </body>
 
 </html>

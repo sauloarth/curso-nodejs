@@ -6,6 +6,6 @@ app.set('io', io);
 
 var porta = process.env.PORT || 3000;
 
-http.listen(3000, function() {
+http.listen(porta, function() {
     console.log('Servidor rodando');
 })
